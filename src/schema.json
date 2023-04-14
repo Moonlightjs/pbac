@@ -1,0 +1,85 @@
+{
+  "type": "object",
+  "properties": {
+    "Version": {
+      "type": "string"
+    },
+    "Statement": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Statement"
+      }
+    }
+  },
+  "required": ["Version", "Statement"],
+  "definitions": {
+    "Condition": {
+      "type": "object"
+    },
+    "Statement": {
+      "type": "object",
+      "allOf": [
+        {
+          "required": ["Effect"]
+        },
+        {
+          "not": {
+            "anyOf": [
+              {
+                "required": ["Action", "NotAction"]
+              },
+              {
+                "required": ["Resource", "NotResource"]
+              },
+              {
+                "required": ["Principal", "NotPrincipal"]
+              }
+            ]
+          }
+        }
+      ],
+
+      "properties": {
+        "Effect": {
+          "type": "string",
+          "enum": ["Allow", "Deny"]
+        },
+        "Sid": {
+          "type": "string"
+        },
+        "Action": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Resource": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Principal": {
+          "type": "object",
+          "properties": {
+            "AWS": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "Service": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "Condition": {
+          "$ref": "#/definitions/Condition"
+        }
+      }
+    }
+  }
+}
